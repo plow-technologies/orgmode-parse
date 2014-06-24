@@ -14,11 +14,14 @@ Library
   HS-Source-Dirs:       src
   GHC-Options:          -Wall
   Exposed-Modules:      Data.StructMsg
-  Other-Modules:        Data.StructMsg.Internal
+  Other-Modules:        Data.StructMsg.Internal,
+                        Data.StructMsg.Internal.OrgMode.Types,
+                        Data.StructMsg.Internal.OrgMode.Parser
 
   Build-Depends:        base        >= 4        && < 5,
-                        attoparsec  >= 0.12.1.0 && < 0.13,
-                        free        >= 4.9      && < 5
+                        attoparsec  >= 0.12.1.0 && < 0.13,                        
+                        free        >= 4.9      && < 5,
+                        text        >= 1.1.1.3  && < 1.2
 
 Test-Suite spec
   Type:                 exitcode-stdio-1.0
@@ -29,6 +32,8 @@ Test-Suite spec
   Main-Is:              Spec.hs
   Build-Depends:        base
                       , hspec
+                      , attoparsec  >= 0.12.1.0 && < 0.13
+                      , text        >= 1.1.1.3  && < 1.2
 
 Source-Repository head
   Type:                 git
