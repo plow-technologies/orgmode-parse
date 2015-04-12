@@ -49,6 +49,7 @@ Library
               , text                      >= 1.0
               , thyme                     >= 0.3
               , unordered-containers      >= 0.2
+              , free                      >= 4.10
 
 Test-Suite tests
   Type:                 exitcode-stdio-1.0
@@ -60,19 +61,20 @@ Test-Suite tests
                 Data.OrgMode.Parse
 
   Build-Depends:
-                base                       >= 4.4
-              , aeson                      >= 0.8
-              , bytestring                 >= 0.10
-              , text                       >= 1.0
-              , attoparsec                 >= 0.12
-              , hashable                   >= 1.2
-              , unordered-containers       >= 0.2
-              , thyme                      >= 0.3
-              , old-locale                 >= 1.0
-              , HUnit                      >= 1.2.5.2
-              , tasty                      >= 0.8
-              , tasty-hunit                >= 0.8.0.1
-              , containers
+                base                      >= 4.4
+              , aeson                     >= 0.8
+              , bytestring                >= 0.10
+              , text                      >= 1.0
+              , attoparsec                >= 0.12
+              , hashable                  >= 1.2
+              , unordered-containers      >= 0.2
+              , thyme                     >= 0.3
+              , old-locale                >= 1.0
+              , HUnit                     >= 1.2.5.2
+              , tasty                     >= 0.8
+              , tasty-hunit               >= 0.8.0.1
+              , containers                >= 0.2
+              , free                      >= 4.10
 
 Source-Repository head
   Type:                 git
