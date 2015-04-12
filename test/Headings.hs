@@ -3,7 +3,7 @@
 
 module Headings where
 
-import           Data.OrgMode.Parse
+import           Data.OrgMode.Parse.Attoparsec.Heading
 import           Test.Tasty
 import           Test.Tasty.HUnit
 
