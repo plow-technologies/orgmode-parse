@@ -1,12 +1,11 @@
-{-|
-Module      :  Data.OrgMode.Parse.Attoparsec.Headings
-Copyright   :  © 2014 Parnell Springmeyer
-License     :  All Rights Reserved
-Maintainer  :  Parnell Springmeyer <parnell@digitalmentat.com>
-Stability   :  stable
-
-Attoparsec combinators for orgmode documents.
--}
+-----------------------------------------------------------------------------
+-- |
+-- Module      :  Data.OrgMode.Parse.Attoparsec.Markup
+-- Copyright   :  © 2015 Parnell Springmeyer
+-- License     :  All Rights Reserved
+-- Maintainer  :  Parnell Springmeyer <parnell@digitalmentat.com>
+-- Stability   :  stable
+-----------------------------------------------------------------------------
 
 module Data.OrgMode.Parse (
 
@@ -17,7 +16,7 @@ module Data.OrgMode.Parse (
 , module Data.OrgMode.Parse.Types
 
 -- * Parse headlines
-, module Data.OrgMode.Parse.Attoparsec.Headings
+, module Data.OrgMode.Parse.Attoparsec.Heading
 
 -- * Parse headline metadata sections
 , module Data.OrgMode.Parse.Attoparsec.Section
@@ -29,14 +28,14 @@ module Data.OrgMode.Parse (
 , module Data.OrgMode.Parse.Attoparsec.Time
 ) where
 
-import Data.OrgMode.Parse.Attoparsec.Document
+import           Data.OrgMode.Parse.Attoparsec.Document
 
-import Data.OrgMode.Parse.Attoparsec.Section
+import           Data.OrgMode.Parse.Attoparsec.Section
 
-import Data.OrgMode.Parse.Attoparsec.Headings
+import           Data.OrgMode.Parse.Attoparsec.Heading
 
-import Data.OrgMode.Parse.Attoparsec.PropertyDrawer
+import           Data.OrgMode.Parse.Attoparsec.PropertyDrawer
 
-import Data.OrgMode.Parse.Attoparsec.Time
+import           Data.OrgMode.Parse.Attoparsec.Time
 
-import Data.OrgMode.Parse.Types
+import           Data.OrgMode.Parse.Types

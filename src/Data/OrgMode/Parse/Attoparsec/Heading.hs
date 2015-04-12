@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 -- |
--- Module      :  Data.OrgMode.Parse.Attoparsec.Headings
+-- Module      :  Data.OrgMode.Parse.Attoparsec.Heading
 -- Copyright   :  © 2014 Parnell Springmeyer
 -- License     :  All Rights Reserved
 -- Maintainer  :  Parnell Springmeyer <parnell@digitalmentat.com>
