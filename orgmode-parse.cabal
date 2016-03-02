@@ -67,6 +67,7 @@ Test-Suite tests
   Build-Depends:
                 base                       >= 4.4
               , aeson                      >= 0.8
+              , free
               , bytestring                 >= 0.10
               , text                       >= 1.0
               , attoparsec                 >= 0.12
