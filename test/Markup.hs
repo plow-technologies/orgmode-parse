@@ -27,10 +27,12 @@ import           Util
 
 type Token = Char
 type PreToken = Char
+type PostToken = Char
 type MarkerToken = Char
 type BorderToken = Char
+
 data Markup strtype next = Pre PreToken next
-                         | Marker Token next
+                         | Marker MarkerToken next
                          | Contents strtype next
                          | Border BorderToken next
                          | Body strtype next

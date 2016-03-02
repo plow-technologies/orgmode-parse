@@ -106,6 +106,41 @@ instance IsString PostToken where
 
 
 
+
+
+-- |MARKER is a character among `*' (bold), `=' (verbatim), `/' (italic),
+-- `+' (strike-through), `_' (underline), `~' (code).
+
+data MarkerToken = MarkerTokenBold | MarkerTokenVerbatim | MarkerTokenItalic | MarkerTokenStrikeThrough
+                 | MarkerTokenUnderline | MarkerTokenCode
+  deriving (Show)
+
+makeMarkerToken :: Char -> MarkerToken
+makeMarkerToken c = case c of
+                      '*' -> MarkerTokenBold
+                      '=' -> MarkerTokenVerbatim
+                      '/' -> MarkerTokenItalic
+                      '+' -> MarkerTokenStrikeThrough
+                      '_' -> MarkerTokenCode
+                      _  -> error ((c: []) ++ "invalid marker token, must be * = / + or _")
+
+
+instance IsString MarkerToken where
+  fromString [] = error "no marker token given"
+  fromString (c:[]) = makeMarkerToken c
+  fromString _ = error "only one character should be a marker token"
+
+
+
+
+
+
+
+
+
+
+
+
 -- | This is a list of all valid whitespace tokens.
 whiteSpaceCharacters = "\n\r \t"
 
