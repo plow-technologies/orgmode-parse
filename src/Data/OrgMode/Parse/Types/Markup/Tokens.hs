@@ -8,14 +8,15 @@
 Tokens are correct by construction delimiters that represent targets for markup parsers
 
 |-}
-module OrgMode.Parse.Types.Markup.Tokens ( PreToken,makePreToken
-                                         , PostToken, makePostToken
-                                         , BorderToken, makeBorderToken) where
+module Data.OrgMode.Parse.Types.Markup.Tokens ( PreToken,makePreToken, preTokenList
+                                              , PostToken, makePostToken
+                                              , BorderToken, makeBorderToken
+                                              , MarkerToken, makeMarkerToken) where
 import           Data.Monoid ((<>))
 import           Data.String
 import           Data.Text
-import           Prelude     (Bool (..), Char, Eq, Ord, Show, const, error,
-                              maybe, show, ($), (++), (.), (==))
+import           Prelude     (Char, Either (..), Eq, Ord, Show, either, error,
+                              id, show, ($), (++), (.), (==))
 
 
 
@@ -35,20 +36,27 @@ import           Prelude     (Bool (..), Char, Eq, Ord, Show, const, error,
 -- IsString is defined so you can write tokens with literals
 newtype PreToken = PreToken Text
   deriving (Show,Eq,Ord)
-makePreToken :: Char ->  PreToken
+
+
+
+
+
+makePreToken :: Char ->  Either Text PreToken
 makePreToken c = if isMatch
-                    then PreToken (cons c empty)
-                    else generateError
+                    then Right $ PreToken (cons c empty)
+                    else Left generateError
 
   where
-    isMatch = any (== c) tokenList
-    generateError = error ((show c) ++ " is not a valid PRE token, must be whitespace or " ++ ((unpack . intersperse ' ') tokenList))
-    tokenList = " ({\"’" <> whiteSpaceCharacters
+    isMatch = any (== c) preTokenList
+    generateError = pack ((show c) ++ " is not a valid PRE token, must be whitespace or " ++ ((unpack . intersperse ' ') preTokenList))
+
+preTokenList :: Text
+preTokenList = " ({\"’" <> whiteSpaceCharacters
 
 
 instance IsString PreToken where
   fromString [] = error "no pre token given"
-  fromString (c:[]) = makePreToken c
+  fromString (c:[]) = either (error . unpack) (id) $ makePreToken c
   fromString _ = error "only one character should be a pre"
 
 
@@ -76,13 +84,13 @@ instance IsString PreToken where
 newtype PostToken = PostToken Text
   deriving (Show,Eq,Ord)
 
-makePostToken :: Char -> PostToken
+makePostToken :: Char -> Either Text PostToken
 makePostToken c = if isMatch
-                     then PostToken (cons c empty)
-                     else generateError
+                     then Right $ PostToken (cons c empty)
+                     else Left generateError
   where
     isMatch = any (== c) tokenList
-    generateError = error ((show c) ++ " is not a valid POST token, must be whitespace or " ++ ((unpack . intersperse ' ') tokenList))
+    generateError = pack ((show c) ++ " is not a valid POST token, must be whitespace or " ++ ((unpack . intersperse ' ') tokenList))
     tokenList = "-.,:!?’\"" <> whiteSpaceCharacters
 
 
@@ -91,7 +99,7 @@ makePostToken c = if isMatch
 
 instance IsString PostToken where
   fromString [] = error "no post token given"
-  fromString (c:[]) = makePostToken c
+  fromString (c:[]) = either (error.unpack) id $ makePostToken c
   fromString _ = error "only one character should be a post token"
 
 
@@ -118,10 +126,10 @@ newtype BorderToken = BorderToken Text
    deriving (Show,Eq,Ord)
 
 
-makeBorderToken :: Char -> BorderToken
+makeBorderToken :: Char -> Either Text BorderToken
 makeBorderToken c = if isMatch
-                       then error ((show c ) ++ " is not a valid Border token any character except ',' and '’'  is acceptable")
-                       else BorderToken (cons c empty)
+                       then Left . pack $ ((show c ) ++ " is not a valid Border token any character except ',' and '’'  is acceptable")
+                       else Right $ BorderToken (cons c empty)
   where
     isMatch = any (== c) "’,"
 
@@ -132,7 +140,7 @@ makeBorderToken c = if isMatch
 
 instance IsString BorderToken where
   fromString [] = error "no Border Token given"
-  fromString (c:[]) = makeBorderToken c
+  fromString (c:[]) = either (error.unpack) id $ makeBorderToken c
   fromString _ = error "only one character should be a Border Token"
 
 
@@ -151,19 +159,19 @@ data MarkerToken = MarkerTokenBold | MarkerTokenVerbatim | MarkerTokenItalic | M
                  | MarkerTokenUnderline | MarkerTokenCode
   deriving (Show,Ord,Eq)
 
-makeMarkerToken :: Char -> MarkerToken
+makeMarkerToken :: Char -> Either Text MarkerToken
 makeMarkerToken c = case c of
-                      '*' -> MarkerTokenBold
-                      '=' -> MarkerTokenVerbatim
-                      '/' -> MarkerTokenItalic
-                      '+' -> MarkerTokenStrikeThrough
-                      '_' -> MarkerTokenCode
-                      _  -> error ((c: []) ++ "invalid marker token, must be * = / + or _")
+                      '*' -> Right MarkerTokenBold
+                      '=' -> Right MarkerTokenVerbatim
+                      '/' -> Right MarkerTokenItalic
+                      '+' -> Right MarkerTokenStrikeThrough
+                      '_' -> Right MarkerTokenCode
+                      _  -> Left . pack $  ((c: []) ++ "invalid marker token, must be * = / + or _")
 
 
 instance IsString MarkerToken where
   fromString [] = error "no marker token given"
-  fromString (c:[]) = makeMarkerToken c
+  fromString (c:[]) = either (error.unpack) id $  makeMarkerToken c
   fromString _ = error "only one character should be a marker token"
 
 
@@ -177,6 +185,7 @@ instance IsString MarkerToken where
 
 
 -- | This is a list of all valid whitespace tokens.
+whiteSpaceCharacters :: Text
 whiteSpaceCharacters = "\n\r \t"
 
 

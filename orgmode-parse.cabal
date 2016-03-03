@@ -36,6 +36,8 @@ Library
   Exposed-Modules:
                   Data.OrgMode.Parse
                   Data.OrgMode.Parse.Types
+                  Data.OrgMode.Parse.Types.Markup
+                  Data.OrgMode.Parse.Types.Markup.Tokens
                   Data.OrgMode.Parse.Attoparsec.Document
                   Data.OrgMode.Parse.Attoparsec.Headings
                   Data.OrgMode.Parse.Attoparsec.PropertyDrawer

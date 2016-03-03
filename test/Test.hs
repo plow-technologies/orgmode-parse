@@ -3,12 +3,12 @@
 
 module Main where
 
+import           Document
 import           Headings
+import           Markup
 import           PropertyDrawer
 import           Test.Tasty
 import           Timestamps
-import           Document
-
 main :: IO ()
 main = defaultMain tests
 
@@ -20,4 +20,5 @@ tests = testGroup
           , parserTimestampTests
           , parserSmallDocumentTests
           , parserWeekdayTests
+          , markupTests
           ]

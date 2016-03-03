@@ -55,5 +55,8 @@
 -}
 
 
-module OrgMode.Parse.Types.Markup () where
+module Data.OrgMode.Parse.Types.Markup (
+  module Data.OrgMode.Parse.Types.Markup.Tokens
+                                    ) where
 
+import           OrgMode.Parse.Types.Markup.Tokens
