@@ -67,20 +67,22 @@ Test-Suite tests
                 Data.OrgMode.Parse
 
   Build-Depends:
-                base                       >= 4.4
-              , aeson                      >= 0.8
-              , free
-              , bytestring                 >= 0.10
-              , text                       >= 1.0
-              , attoparsec                 >= 0.12
-              , hashable                   >= 1.2
-              , unordered-containers       >= 0.2
-              , thyme                      >= 0.3
-              , old-locale                 >= 1.0
-              , HUnit                      >= 1.2.5.2
-              , tasty                      >= 0.8
-              , tasty-hunit                >= 0.8.0.1
-              , containers
+                    base                       >= 4.4
+                , HUnit                      >= 1.2.5.2
+                , QuickCheck 
+                , aeson                      >= 0.8
+                , attoparsec                 >= 0.12
+                , bytestring                 >= 0.10
+                , containers
+                , free
+                , hashable                   >= 1.2
+                , old-locale                 >= 1.0
+                , tasty                      >= 0.8
+                , tasty-hunit                >= 0.8.0.1
+                , tasty-quickcheck
+                , text                       >= 1.0
+                , thyme                      >= 0.3
+                , unordered-containers       >= 0.2
 
 Source-Repository head
   Type:                 git

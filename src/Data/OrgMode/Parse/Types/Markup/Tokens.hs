@@ -9,9 +9,9 @@ Tokens are correct by construction delimiters that represent targets for markup 
 
 |-}
 module Data.OrgMode.Parse.Types.Markup.Tokens ( PreToken,makePreToken, preTokenList
-                                              , PostToken, makePostToken
-                                              , BorderToken, makeBorderToken
-                                              , MarkerToken, makeMarkerToken) where
+                                              , PostToken, makePostToken, postTokenList
+                                              , BorderToken, makeBorderToken, borderTokenList
+                                              , MarkerToken, makeMarkerToken, markerTokenList) where
 import           Data.Monoid ((<>))
 import           Data.String
 import           Data.Text
@@ -89,11 +89,12 @@ makePostToken c = if isMatch
                      then Right $ PostToken (cons c empty)
                      else Left generateError
   where
-    isMatch = any (== c) tokenList
-    generateError = pack ((show c) ++ " is not a valid POST token, must be whitespace or " ++ ((unpack . intersperse ' ') tokenList))
-    tokenList = "-.,:!?’\"" <> whiteSpaceCharacters
+    isMatch = any (== c) postTokenList
+    generateError = pack ((show c) ++ " is not a valid POST token, must be whitespace or " ++ ((unpack . intersperse ' ') postTokenList))
 
 
+postTokenList :: Text
+postTokenList = "-.,:!?’\"" <> whiteSpaceCharacters
 
 
 
@@ -131,9 +132,10 @@ makeBorderToken c = if isMatch
                        then Left . pack $ ((show c ) ++ " is not a valid Border token any character except ',' and '’'  is acceptable")
                        else Right $ BorderToken (cons c empty)
   where
-    isMatch = any (== c) "’,"
+    isMatch = any (== c) borderTokenList
 
-
+borderTokenList :: Text
+borderTokenList = "’," <> whiteSpaceCharacters
 
 
 
@@ -167,6 +169,10 @@ makeMarkerToken c = case c of
                       '+' -> Right MarkerTokenStrikeThrough
                       '_' -> Right MarkerTokenCode
                       _  -> Left . pack $  ((c: []) ++ "invalid marker token, must be * = / + or _")
+
+
+markerTokenList :: Text
+markerTokenList = "*=/+_"
 
 
 instance IsString MarkerToken where
