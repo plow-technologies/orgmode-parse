@@ -2,17 +2,17 @@
 
 module Document where
 
+import qualified Data.Aeson                             as Aeson
 import           Data.Attoparsec.Text
 import           Data.Monoid
+import           Data.OrgMode.Parse.Attoparsec.Document
+import           Data.OrgMode.Parse.Attoparsec.Time
+import           Data.OrgMode.Parse.Types
 import           Data.Text
 import qualified Data.Text                              as Text
 import qualified Data.Text.IO                           as TextIO
 import           Test.Tasty
 import           Test.Tasty.HUnit
-
-import           Data.OrgMode.Parse.Attoparsec.Document
-import           Data.OrgMode.Parse.Attoparsec.Time
-import           Data.OrgMode.Parse.Types
 import           Util
 
 parserSmallDocumentTests :: TestTree
@@ -24,6 +24,8 @@ parserSmallDocumentTests = testGroup "Attoparsec Small Document"
   , testCase "Parse Heading no \n"    $
       testDocS "* T" (Document "" [emptyHeading {title="T"}])
   , testCase "Parse Document from File" $ testDocFile
+  , testCase "serialization " (assertBool "encode" $ Aeson.encode sampleAParse == sampleAParseByteString)
+  , testCase "serialization " (assertBool "decode" $ (Just sampleAParse) == (Aeson.decode sampleAParseByteString))
   ]
   where testDocS s r = expectParse (parseDocument kw) s (Right r)
         testDocF s   = expectParse (parseDocument kw) s (Left "Some failure")
@@ -49,6 +51,10 @@ sampleAParse = Document
                ,emptyHeading {section=emptySection{sectionParagraph=" *\n"}}
                ,emptyHeading {title="Test2", tags=["Two","Tags"]}
                ]
+
+
+-- Ensure that changes don't destroy serialization
+sampleAParseByteString = "{\"documentHeadings\":[{\"priority\":null,\"stats\":null,\"subHeadings\":[],\"title\":\"Test1\",\"level\":1,\"section\":{\"sectionClocks\":[],\"sectionProperties\":{},\"sectionPlannings\":{},\"sectionParagraph\":\"\"},\"keyword\":null,\"tags\":[\"Hi there\"]},{\"priority\":null,\"stats\":null,\"subHeadings\":[],\"title\":\"\",\"level\":1,\"section\":{\"sectionClocks\":[],\"sectionProperties\":{},\"sectionPlannings\":{},\"sectionParagraph\":\" *\\n\"},\"keyword\":null,\"tags\":[]},{\"priority\":null,\"stats\":null,\"subHeadings\":[],\"title\":\"Test2\",\"level\":1,\"section\":{\"sectionClocks\":[],\"sectionProperties\":{},\"sectionPlannings\":{},\"sectionParagraph\":\"\"},\"keyword\":null,\"tags\":[\"Two\",\"Tags\"]}],\"documentText\":\"This is some sample text in a paragraph which may contain * , : , and other special characters.\\n\\n\"}"
 
 samplePText :: Text
 samplePText = Text.concat ["* Test3\n"
