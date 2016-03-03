@@ -1,3 +1,4 @@
+
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE RankNTypes          #-}
 {-# LANGUAGE ScopedTypeVariables #-}
@@ -23,18 +24,8 @@ import           Test.Tasty.HUnit
 import           Test.Tasty.QuickCheck
 import           Util
 
+import           Data.OrgMode.Parse.Types.Markup
 
-
--- --------------------------------------------------
--- Markup Types
--- --------------------------------------------------
-
-data Markup strtype next = Pre PreToken next
-                         | Marker MarkerToken next
-                         | Contents strtype next
-                         | Border BorderToken next
-                         | Body strtype next
-                         | Post PostToken
 
 exampleMarkup strContents strBody = pre
   where
@@ -46,8 +37,6 @@ exampleMarkup strContents strBody = pre
     body = (Body strBody borderEnd)
     markerEnd = (Marker "*" parenPost)
     parenPost = Post ")"
-
-
 
 
 

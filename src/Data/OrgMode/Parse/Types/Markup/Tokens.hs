@@ -8,7 +8,7 @@
 Tokens are correct by construction delimiters that represent targets for markup parsers
 
 |-}
-module Data.OrgMode.Parse.Types.Markup.Tokens ( PreToken,makePreToken, preTokenList
+module Data.OrgMode.Parse.Types.Markup.Tokens ( PreToken,makePreToken, preTokenList, getPostToken
                                               , PostToken, makePostToken, postTokenList
                                               , BorderToken, makeBorderToken, borderTokenList
                                               , MarkerToken, makeMarkerToken, markerTokenList) where
@@ -93,6 +93,9 @@ makePostToken c = if isMatch
     generateError = pack ((show c) ++ " is not a valid POST token, must be whitespace or " ++ ((unpack . intersperse ' ') postTokenList))
 
 
+getPostToken :: PostToken -> Text
+getPostToken  (PostToken t ) = t
+
 postTokenList :: Text
 postTokenList = "-.,:!?’\"" <> whiteSpaceCharacters
 
@@ -133,6 +136,8 @@ makeBorderToken c = if isMatch
                        else Right $ BorderToken (cons c empty)
   where
     isMatch = any (== c) borderTokenList
+
+
 
 borderTokenList :: Text
 borderTokenList = "’," <> whiteSpaceCharacters

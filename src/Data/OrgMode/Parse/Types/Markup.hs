@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveFunctor #-}
 {-
 5.13 Text Markup
 ────────────────
@@ -56,7 +57,20 @@
 
 
 module Data.OrgMode.Parse.Types.Markup (
- module Data.OrgMode.Parse.Types.Markup.Tokens
-                                    ) where
+   module Data.OrgMode.Parse.Types.Markup.Tokens
+ , Markup (..)
+                                     ) where
 
 import           Data.OrgMode.Parse.Types.Markup.Tokens
+-- --------------------------------------------------
+-- Markup Types
+-- --------------------------------------------------
+
+data Markup strtype next = Pre PreToken next
+                         | Marker MarkerToken next
+                         | Contents strtype next
+                         | Border BorderToken next
+                         | Body strtype next
+                         | Post PostToken
+
+ deriving (Functor,Show)
