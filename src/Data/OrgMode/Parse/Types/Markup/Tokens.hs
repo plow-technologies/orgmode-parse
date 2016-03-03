@@ -5,16 +5,17 @@
 
 {-|
 
-Tokens are nice to specifically design so that pretty printing can be generated programmatically at times
+Tokens are correct by construction delimiters that represent targets for markup parsers
 
 |-}
 module OrgMode.Parse.Types.Markup.Tokens ( PreToken,makePreToken
-                                         , PostToken, makePostToken) where
+                                         , PostToken, makePostToken
+                                         , BorderToken, makeBorderToken) where
 import           Data.Monoid ((<>))
 import           Data.String
 import           Data.Text
-import           Prelude     (Bool (..), Char, Show, const, error, maybe, show,
-                              ($), (++), (.), (==))
+import           Prelude     (Bool (..), Char, Eq, Ord, Show, const, error,
+                              maybe, show, ($), (++), (.), (==))
 
 
 
@@ -33,7 +34,7 @@ import           Prelude     (Bool (..), Char, Show, const, error, maybe, show,
 -- |   PRE is a whitespace character, `(', `{' ~’~ or a double quote.
 -- IsString is defined so you can write tokens with literals
 newtype PreToken = PreToken Text
-  deriving (Show)
+  deriving (Show,Eq,Ord)
 makePreToken :: Char ->  PreToken
 makePreToken c = if isMatch
                     then PreToken (cons c empty)
@@ -73,7 +74,7 @@ instance IsString PreToken where
 --   `)', `}' or a double quote.
 
 newtype PostToken = PostToken Text
-  deriving (Show)
+  deriving (Show,Eq,Ord)
 
 makePostToken :: Char -> PostToken
 makePostToken c = if isMatch
@@ -108,12 +109,47 @@ instance IsString PostToken where
 
 
 
+
+
+
+
+-- | BORDER can be any non-whitespace character excepted ~,~, ~’~ or a double quote.
+newtype BorderToken = BorderToken Text
+   deriving (Show,Eq,Ord)
+
+
+makeBorderToken :: Char -> BorderToken
+makeBorderToken c = if isMatch
+                       then error ((show c ) ++ " is not a valid Border token any character except ',' and '’'  is acceptable")
+                       else BorderToken (cons c empty)
+  where
+    isMatch = any (== c) "’,"
+
+
+
+
+
+
+instance IsString BorderToken where
+  fromString [] = error "no Border Token given"
+  fromString (c:[]) = makeBorderToken c
+  fromString _ = error "only one character should be a Border Token"
+
+
+
+
+
+
+
+
+
+
 -- |MARKER is a character among `*' (bold), `=' (verbatim), `/' (italic),
 -- `+' (strike-through), `_' (underline), `~' (code).
 
 data MarkerToken = MarkerTokenBold | MarkerTokenVerbatim | MarkerTokenItalic | MarkerTokenStrikeThrough
                  | MarkerTokenUnderline | MarkerTokenCode
-  deriving (Show)
+  deriving (Show,Ord,Eq)
 
 makeMarkerToken :: Char -> MarkerToken
 makeMarkerToken c = case c of
@@ -129,7 +165,6 @@ instance IsString MarkerToken where
   fromString [] = error "no marker token given"
   fromString (c:[]) = makeMarkerToken c
   fromString _ = error "only one character should be a marker token"
-
 
 
 
