@@ -37,6 +37,7 @@ Library
                   Data.OrgMode.Parse
                   Data.OrgMode.Parse.Types
                   Data.OrgMode.Parse.Types.Markup
+                  Data.OrgMode.Parse.Types.Paragraph                  
                   Data.OrgMode.Parse.Types.Markup.Tokens
                   Data.OrgMode.Parse.Attoparsec.Document
                   Data.OrgMode.Parse.Attoparsec.Headings

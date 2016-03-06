@@ -64,6 +64,7 @@ newtype LevelDepth = LevelDepth Int
 data TitleMeta = TitleMeta Text (Maybe Stats) (Maybe [Tag])
   deriving (Eq, Show)
 
+
 data Heading = Heading
     { level       :: Level              -- ^ Org headline nesting level (1 is at the top)
     , keyword     :: Maybe StateKeyword -- ^ State of the headline (e.g. TODO, DONE)
