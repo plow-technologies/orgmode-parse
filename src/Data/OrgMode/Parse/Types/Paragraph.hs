@@ -32,7 +32,8 @@ namely:
 
 | -}
 
-module Data.OrgMode.Parse.Types.Paragraph () where
+module Data.OrgMode.Parse.Types.Paragraph ( ParagraphExpr(..)
+                                          , module Data.OrgMode.Parse.Types.Markup) where
 
 
 import           Data.OrgMode.Parse.Types.Markup

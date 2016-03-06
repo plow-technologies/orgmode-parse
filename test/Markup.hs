@@ -9,22 +9,29 @@ import           Data.Attoparsec.Text
 import           Data.Either                            (isLeft, isRight, lefts,
                                                          rights)
 
+import           Control.Monad.Free
+
 import qualified Data.List                              as L
+import qualified Data.Text                              as Text
+import qualified Data.Text.IO                           as TextIO
+
+
 import           Data.Monoid
 import           Data.OrgMode.Parse.Attoparsec.Document
 import           Data.OrgMode.Parse.Attoparsec.Time
 import           Data.OrgMode.Parse.Types
+import           Data.OrgMode.Parse.Types.Markup
 import           Data.OrgMode.Parse.Types.Markup.Tokens
 import           Data.Text
-import qualified Data.Text                              as Text
-import qualified Data.Text.IO                           as TextIO
+
+
 import           Test.QuickCheck
 import           Test.Tasty
 import           Test.Tasty.HUnit
 import           Test.Tasty.QuickCheck
 import           Util
 
-import           Data.OrgMode.Parse.Types.Markup
+
 
 
 exampleMarkup strContents strBody = pre
@@ -38,8 +45,8 @@ exampleMarkup strContents strBody = pre
     markerEnd = (Marker "*" parenPost)
     parenPost = Post ")"
 
-
-
+exampleMarkup' :: Free (Markup String) (Markup String ())
+exampleMarkup' = Free (Pre "(" (Free (Post ")")))
 
 
 
