@@ -1,3 +1,5 @@
+{-# LANGUAGE DeriveFunctor #-}
+
 
 {- |
 Module      : Data.OrgMode.Parse.Markup
@@ -32,11 +34,17 @@ namely:
 
 module Data.OrgMode.Parse.Types.Paragraph () where
 
-import           Control.Comonad.Cofree
+
 import           Data.OrgMode.Parse.Types.Markup
 
--- data ParagraphExpr strtype next = ParagraphPlainText strtype
---                                   | ParagraphMarker
+data ParagraphExpr strtype next = ParagraphPlainText strtype next
+                                | ParagraphMarker (Markup strtype next)
+                                | ParagraphTable strtype next
+                                | ParagraphVerseBlock strtype next
+  deriving (Show,Functor)
+
+
+
 
 
 
