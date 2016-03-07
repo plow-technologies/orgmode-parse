@@ -1,5 +1,5 @@
-{-# LANGUAGE DeriveFunctor #-}
-
+{-# LANGUAGE DeriveFunctor  #-}
+{-# LANGUAGE KindSignatures #-}
 
 {- |
 Module      : Data.OrgMode.Parse.Markup
@@ -36,12 +36,14 @@ module Data.OrgMode.Parse.Types.Paragraph ( ParagraphExpr(..)
                                           , module Data.OrgMode.Parse.Types.Markup) where
 
 
+import           Control.Monad.Free
 import           Data.OrgMode.Parse.Types.Markup
 
 data ParagraphExpr strtype next = ParagraphPlainText strtype next
-                                | ParagraphMarker (Markup strtype next)
+                                | ParagraphMarkup (Free (Markup strtype) (Markup strtype ()) ) next
                                 | ParagraphTable strtype next
                                 | ParagraphVerseBlock strtype next
+                                | ParagraphEnd
   deriving (Show,Functor)
 
 
